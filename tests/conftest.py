@@ -7,8 +7,8 @@ os.environ["ADMIN_PASSWORD"] = "secure-test-password"
 import pytest
 from fastapi.testclient import TestClient
 
-from app.application import app
 from app.database import Base, engine
+from app.site import app
 
 
 @pytest.fixture(autouse=True)

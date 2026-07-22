@@ -1,32 +1,26 @@
-{% extends "base.html" %}{% block title %}ServicePilot AI · Service operations, automated safely{% endblock %}{% block content %}
+{% extends "base.html" %}{% block title %}ServicePilot AI · AI operations for field service teams{% endblock %}{% block content %}
 <section class="product-hero">
   <div class="hero-copy">
-    <div class="product-badge"><span></span> AI SERVICE OPERATIONS</div>
+    <div class="product-badge"><span></span> FOR FIELD SERVICE & PROPERTY OPERATIONS</div>
     <h1>Every service request.<br><em>Ready for action.</em></h1>
-    <p>ServicePilot turns unstructured customer messages into risk-aware, technician-ready service plans—with a human approving every important action.</p>
+    <p>ServicePilot helps field-service businesses, property managers, maintenance teams and trades turn messy customer messages into safe, technician-ready service plans.</p>
     <div class="hero-actions"><a class="button primary" href="/intake">Try the service intake <b>→</b></a><a class="text-link" href="/login">Open operations <b>↗</b></a></div>
     <div class="hero-proof"><span>✓ No credit card</span><span>✓ Human approval built in</span><span>✓ Complete audit trail</span></div>
   </div>
   <div class="product-window">
     <div class="window-bar"><div class="window-dots"><i></i><i></i><i></i></div><span>Live request · SP-260722-1042</span><div class="secure-pill">● Secured</div></div>
+    <div class="transform-labels"><span>BEFORE · CUSTOMER MESSAGE</span><b>AI STRUCTURES & CHECKS →</b><span>AFTER · SERVICE PLAN</span></div>
     <div class="window-body">
-      <div class="request-pane">
-        <div class="pane-label">INCOMING REQUEST</div>
-        <div class="customer-row"><div class="avatar">SM</div><div><b>Sofia Meier</b><small>Web intake · 2 min ago</small></div></div>
-        <blockquote>“The kitchen pipe is leaking steadily under the sink. Can someone come Friday morning?”</blockquote>
-        <div class="location-line"><span>⌖</span> Seefeldstrasse 24, Zürich</div>
-      </div>
-      <div class="decision-pane">
-        <div class="decision-head"><div><div class="pane-label">AI SERVICE PLAN</div><b>Ready for review</b></div><span class="confidence">93% confidence</span></div>
-        <div class="plan-grid"><div><span>Category</span><b>Plumbing</b></div><div><span>Priority</span><b class="priority">High</b></div><div><span>Technician</span><b>Maya Keller</b></div><div><span>Estimate</span><b>CHF 145.00</b></div></div>
-        <div class="schedule-row"><span><small>PROPOSED APPOINTMENT</small><b>Friday · 09:00–11:00</b></span><span class="calendar-icon">17</span></div>
-        <div class="approval-bar"><div><span class="shield">✓</span><span><b>Human approval required</b><small>No customer action sent yet</small></span></div><button>Review plan →</button></div>
-      </div>
+      <div class="request-pane"><div class="pane-label">INCOMING REQUEST</div><div class="customer-row"><div class="avatar">SM</div><div><b>Sofia Meier</b><small>Web intake · 2 min ago</small></div></div><blockquote>“The kitchen pipe is leaking steadily under the sink. Can someone come Friday morning?”</blockquote><div class="location-line"><span>⌖</span> Seefeldstrasse 24, Zürich</div></div>
+      <div class="decision-pane"><div class="decision-head"><div><div class="pane-label">AI SERVICE PLAN</div><b>Ready for review</b></div><span class="confidence">93% confidence</span></div><div class="plan-grid"><div><span>Category</span><b>Plumbing</b></div><div><span>Priority</span><b class="priority">High</b></div><div><span>Technician</span><b>Maya Keller</b></div><div><span>Estimate</span><b>CHF 145.00</b></div></div><div class="schedule-row"><span><small>PROPOSED APPOINTMENT</small><b>Friday · 09:00–11:00</b></span><span class="calendar-icon">17</span></div><div class="approval-bar"><div><span class="shield">✓</span><span><b>Human approval required</b><small>No customer action sent yet</small></span></div><button>Review plan →</button></div></div>
     </div>
   </div>
 </section>
-<section class="outcomes"><div><strong>4</strong><span>intake channels</span></div><div><strong>&lt;1s</strong><span>request classification</span></div><div><strong>100%</strong><span>decisions audited</span></div><div><strong>0</strong><span>unsafe autonomous actions</span></div></section>
+<section class="audience-strip"><span>BUILT FOR</span><b>Field service companies</b><b>Property managers</b><b>Maintenance teams</b><b>Skilled trades</b><b>IT service desks</b></section>
+<section class="outcomes"><div><strong>4</strong><span>intake channels</span></div><div><strong>&lt;1s</strong><span>demo classification</span></div><div><strong>100%</strong><span>decisions audited</span></div><div><strong>0</strong><span>unguarded actions</span></div></section>
 <section class="workflow-section"><div class="section-intro"><div><p class="eyebrow">ONE CONTROLLED WORKFLOW</p><h2>Automation your operations team can trust.</h2></div><p>From first contact to final notification, every step is observable, reversible, and governed by your approval policy.</p></div><div class="workflow-grid"><article><span>01</span><div class="feature-icon">⌁</div><h3>Understand the request</h3><p>Extract customers, locations, issues, timing and urgency from natural-language messages.</p></article><article><span>02</span><div class="feature-icon">◇</div><h3>Assess and recommend</h3><p>Detect risk, retrieve company knowledge, match technicians and prepare a transparent quote.</p></article><article><span>03</span><div class="feature-icon">✓</div><h3>Approve and execute</h3><p>Operators approve consequential actions before calendar, CRM, email or webhook execution.</p></article></div></section>
-<section class="control-banner"><div><p class="eyebrow">BUILT FOR REAL OPERATIONS</p><h2>AI speed. Human accountability.</h2><p>Role-based access, tenant isolation, signed integrations, automatic retries and an append-only decision history—ready from day one.</p></div><a class="button light" href="/docs">Explore the API →</a></section>
+<section class="security-section"><div class="security-copy"><p class="eyebrow">SECURITY BY DESIGN</p><h2>Your customer data stays under your control.</h2><p>The hosted demo uses its deterministic local classifier, so intake content is not sent to an external AI provider. Production deployments can select their own compatible provider and retention terms.</p><a class="text-link" href="/privacy">Read our data practices →</a></div><div class="security-grid"><div><span>01</span><b>TLS in transit</b><p>Cloudflare HTTPS protects traffic between customers and the service.</p></div><div><span>02</span><b>Tenant isolation</b><p>Organization-scoped queries and role-based access separate operational data.</p></div><div><span>03</span><b>Human control</b><p>External business actions remain blocked until an authorized operator approves.</p></div><div><span>04</span><b>Auditable decisions</b><p>AI recommendations and human decisions are written to an append-only history.</p></div></div></section>
+<section class="proof-section"><p class="eyebrow">VERIFIABLE, NOT VAGUE</p><h2>Built in the open. Tested continuously.</h2><div class="proof-grid"><a href="https://github.com/hunterinvariants/servicepilot-ai"><b>Open-source repository ↗</b><span>Inspect the architecture, controls and commit history.</span></a><a href="https://github.com/hunterinvariants/servicepilot-ai/actions"><b>Automated CI ↗</b><span>Tests, linting, migrations and Docker builds on every push.</span></a><a href="/docs"><b>Live API reference →</b><span>Explore the versioned service-intake and approval endpoints.</span></a></div></section>
+<section class="control-banner"><div><p class="eyebrow">BUILT FOR REAL OPERATIONS</p><h2>AI speed. Human accountability.</h2><p>Try the complete workflow—from an unstructured request to a reviewed service plan.</p></div><a class="button light" href="/intake">Submit a request →</a></section>
 {% endblock %}
 
