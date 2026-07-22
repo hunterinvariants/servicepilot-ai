@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from enum import StrEnum
 from uuid import uuid4
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, String, Text
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, String, Text, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -30,9 +30,40 @@ class ApprovalStatus(StrEnum):
     REJECTED = "rejected"
 
 
+class Organization(Base):
+    __tablename__ = "organizations"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    name: Mapped[str] = mapped_column(String(160))
+    slug: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class User(Base):
+    __tablename__ = "users"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
+    email: Mapped[str] = mapped_column(String(254), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(180))
+    role: Mapped[str] = mapped_column(String(30), default="operator")
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class ApiKey(Base):
+    __tablename__ = "api_keys"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
+    name: Mapped[str] = mapped_column(String(120))
+    prefix: Mapped[str] = mapped_column(String(12), index=True)
+    key_hash: Mapped[str] = mapped_column(String(180))
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
 class Customer(Base):
     __tablename__ = "customers"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
     name: Mapped[str] = mapped_column(String(160))
     email: Mapped[str] = mapped_column(String(254), index=True)
     phone: Mapped[str | None] = mapped_column(String(40))
@@ -44,8 +75,9 @@ class Customer(Base):
 class Technician(Base):
     __tablename__ = "technicians"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
     name: Mapped[str] = mapped_column(String(160))
-    email: Mapped[str] = mapped_column(String(254), unique=True)
+    email: Mapped[str] = mapped_column(String(254), index=True)
     skills: Mapped[list] = mapped_column(JSON, default=list)
     region: Mapped[str] = mapped_column(String(100))
     available: Mapped[bool] = mapped_column(Boolean, default=True)
@@ -54,6 +86,7 @@ class Technician(Base):
 class Ticket(Base):
     __tablename__ = "tickets"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
     reference: Mapped[str] = mapped_column(String(20), unique=True, index=True)
     customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"))
     technician_id: Mapped[str | None] = mapped_column(ForeignKey("technicians.id"))
@@ -79,6 +112,7 @@ class Ticket(Base):
 class Approval(Base):
     __tablename__ = "approvals"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
     ticket_id: Mapped[str] = mapped_column(ForeignKey("tickets.id"), index=True)
     action: Mapped[str] = mapped_column(String(80))
     status: Mapped[str] = mapped_column(String(20), default=ApprovalStatus.PENDING)
@@ -92,6 +126,7 @@ class Approval(Base):
 class AuditEvent(Base):
     __tablename__ = "audit_events"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
     ticket_id: Mapped[str | None] = mapped_column(String(36), index=True)
     actor: Mapped[str] = mapped_column(String(80))
     event_type: Mapped[str] = mapped_column(String(100))
@@ -102,6 +137,7 @@ class AuditEvent(Base):
 class MetricEvent(Base):
     __tablename__ = "metric_events"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    organization_id: Mapped[str] = mapped_column(ForeignKey("organizations.id"), index=True)
     provider: Mapped[str] = mapped_column(String(80))
     operation: Mapped[str] = mapped_column(String(80))
     latency_ms: Mapped[float] = mapped_column(Float)
@@ -110,3 +146,9 @@ class MetricEvent(Base):
     estimated_cost: Mapped[float] = mapped_column(Float, default=0)
     success: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+@event.listens_for(AuditEvent, "before_update")
+@event.listens_for(AuditEvent, "before_delete")
+def prevent_audit_mutation(*_):
+    raise ValueError("Audit events are append-only")

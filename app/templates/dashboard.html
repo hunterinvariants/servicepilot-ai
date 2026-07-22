@@ -1,9 +1,8 @@
 {% extends "base.html" %}{% block content %}
-<header class="hero"><div><p class="eyebrow">SERVICE OPERATIONS COMMAND CENTER</p><h1>Every request, safely<br>moved toward resolution.</h1><p>AI intake meets human judgment. Review risk, approve plans, and keep a complete operational record.</p></div><a class="button" href="/intake">+ Capture request</a></header>
+<header class="hero"><div><p class="eyebrow">SERVICE OPERATIONS COMMAND CENTER</p><h1>Every request, safely<br>moved toward resolution.</h1><p>Signed in as {{ principal.email }} · {{ principal.role|title }}</p></div><div class="actions"><a class="button" href="/intake">+ Capture request</a><form class="inline-form" method="post" action="/logout"><button class="button ghost">Sign out</button></form></div></header>
 <section class="stats"><article><b>{{ tickets|length }}</b><span>Active tickets</span></article><article><b>{{ pending }}</b><span>Awaiting approval</span></article><article><b>{{ customers }}</b><span>Customers</span></article><article><b>{{ "%.0f"|format(avg_latency) }} ms</b><span>AI latency</span></article></section>
 <section class="panel"><div class="panel-head"><div><p class="eyebrow">LIVE WORKLOAD</p><h2>Service queue</h2></div><span class="live">● Live</span></div>
 {% if tickets %}<div class="table"><div class="tr th"><span>Ticket</span><span>Customer</span><span>Service</span><span>Priority</span><span>Status</span></div>
 {% for t in tickets %}<a class="tr" href="/tickets/{{ t.id }}"><span><b>{{ t.reference }}</b><small>{{ t.created_at.strftime('%d %b · %H:%M') }}</small></span><span>{{ t.customer.name }}<small>{{ t.customer.address }}</small></span><span>{{ t.category|title }}</span><span class="urgency {{ t.urgency }}">{{ t.urgency }}</span><span class="status">{{ t.status|replace('_',' ') }}</span></a>{% endfor %}</div>
 {% else %}<div class="empty"><h3>No requests yet</h3><p>Submit the first request to watch the agent classify, route, quote, and request approval.</p><a class="button" href="/intake">Create demo request</a></div>{% endif %}</section>
 {% endblock %}
-

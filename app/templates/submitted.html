@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Request received · ServicePilot AI{% endblock %}{% block content %}
+<div class="empty confirmation"><p class="eyebrow">REQUEST RECEIVED</p><h1>{{ ticket.reference }}</h1><p>Our AI intake agent has structured your request and sent its proposed plan to a human operator. No appointment or quote is confirmed until review.</p>{% if ticket.risk_flags %}<p class="risk-note">This request was escalated for priority review.</p>{% endif %}<a class="button" href="/">Return home</a></div>{% endblock %}
