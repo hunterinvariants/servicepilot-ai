@@ -12,6 +12,7 @@ services:
     command: rq worker servicepilot --url redis://redis:6379/0
     env_file: .env
     depends_on: [db, redis]
+    healthcheck: {disable: true}
     restart: unless-stopped
   db:
     image: postgres:16-alpine
@@ -29,4 +30,3 @@ services:
 volumes:
   postgres_data:
   redis_data:
-
