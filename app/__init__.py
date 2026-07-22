@@ -1,0 +1,2 @@
+"""ServicePilot AI application package."""
+

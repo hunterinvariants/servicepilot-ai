@@ -1,0 +1,7 @@
+tunnel: servicepilot-ai
+credentials-file: /etc/cloudflared/servicepilot-ai.json
+ingress:
+  - hostname: servicepilot.hunter-mvp.com
+    service: http://localhost:8000
+  - service: http_status:404
+
