@@ -7,8 +7,8 @@ os.environ["ADMIN_PASSWORD"] = "secure-test-password"
 import pytest
 from fastapi.testclient import TestClient
 
+from app.application import app
 from app.database import Base, engine
-from app.main import app
 
 
 @pytest.fixture(autouse=True)
@@ -30,3 +30,4 @@ def authenticated_client(client):
     response = client.post("/login", data={"email": "admin@test.local", "password": "secure-test-password"})
     assert response.status_code == 200
     return client
+
